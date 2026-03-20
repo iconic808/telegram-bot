@@ -229,9 +229,7 @@ def photo_handler(message):
 def buttons(call):
 
     uid = call.from_user.id
-
-    if call.data == "buy":
-
+elif call.data == "buy":
     markup = InlineKeyboardMarkup()
 
     for i, name in enumerate(categories):
