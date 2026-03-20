@@ -290,13 +290,13 @@ def buttons(call):
         f"✅ Payment Verified!\n\nJoin:\n{link}"
     )
 
-        bot.edit_message_caption(
-            caption="✅ Approved",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id
-        )
+    bot.edit_message_caption(
+        caption="✅ Approved",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id
+    )
 
-        bot.answer_callback_query(call.id,"Approved",show_alert=True)
+    bot.answer_callback_query(call.id, "Approved", show_alert=True)
 
     elif call.data.startswith("reject_"):
 
