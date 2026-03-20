@@ -229,44 +229,45 @@ def photo_handler(message):
 def buttons(call):
 
     uid = call.from_user.id
-elif call.data == "buy":
-    markup = InlineKeyboardMarkup()
 
-    for i, name in enumerate(categories):
-        markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
+    if call.data == "buy":
 
-    markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
+        markup = InlineKeyboardMarkup()
 
-    bot.edit_message_caption(
-        caption="📂 Select category 👇",
-        chat_id=call.message.chat.id,
-        message_id=call.message.message_id,
-        reply_markup=markup
-    )
-        
+        for i, name in enumerate(categories):
+            markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
+
+        markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
+
+        bot.edit_message_caption(
+            caption="📂 Select category 👇",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
 
     elif call.data.startswith("cat_"):
 
-    index = int(call.data.split("_")[1])
-    selected_name, selected_link = categories[index]
+        index = int(call.data.split("_")[1])
+        selected_name, selected_link = categories[index]
 
-    user_category[uid] = selected_link
+        user_category[uid] = selected_link
 
-    markup = InlineKeyboardMarkup()
-    markup.add(InlineKeyboardButton("✅ I HAVE PAID", callback_data="paid"))
-    markup.add(InlineKeyboardButton("⬅️ Back", callback_data="buy"))
+        markup = InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton("✅ I HAVE PAID", callback_data="paid"))
+        markup.add(InlineKeyboardButton("⬅️ Back", callback_data="buy"))
 
-    media = InputMediaPhoto(
-        open("qr.jpg","rb"),
-        caption=f"{selected_name}\n\n{payment_text}"
-    )
+        media = InputMediaPhoto(
+            open("qr.jpg","rb"),
+            caption=f"{selected_name}\n\n{payment_text}"
+        )
 
-    bot.edit_message_media(
-        media,
-        call.message.chat.id,
-        call.message.message_id,
-        reply_markup=markup
-    )
+        bot.edit_message_media(
+            media,
+            call.message.chat.id,
+            call.message.message_id,
+            reply_markup=markup
+        )
 
     elif call.data == "paid":
 
