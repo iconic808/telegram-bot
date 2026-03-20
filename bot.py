@@ -18,11 +18,11 @@ DB_FILE = "database.json"
 
 # Categories
 categories = [
-    "🎬 Premium Videos",
-    "💎 Exclusive Content",
-    "🔥 Trending Clips",
-    "🎥 Web Series",
-    "🌟 Special Collection"
+    "🥵 𝐂𝐏 𝐊𝐢𝐝$",
+    "😍 𝐌𝟎𝐌 𝐒𝟎𝐍",
+    "🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋",
+    "💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄",
+    "💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢"
 ]
 
 # DATABASE
