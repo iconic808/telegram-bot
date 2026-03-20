@@ -7,27 +7,22 @@ ADMIN_ID = 8419203344
 
 bot = telebot.TeleBot(TOKEN)
 
-premium_channel = "https://t.me/+vZk5pN-jUWVlYzRl"
 demo_channel = "https://t.me/+C6f4L2w7KyM0MTY1"
 how_channel = "https://t.me/+C6f4L2w7KyM0MTY1"
 
 waiting_screenshot = {}
 waiting_qr = False
+user_category = {}
 
 DB_FILE = "database.json"
 
-# Categories
+# ✅ FIXED Categories
 categories = [
-    ("🥵 𝐂𝐏 𝐊𝐢𝐝$",
-    "https://t.me/+C6f4L2w7KyM0MTY1"),
-    ("😍 𝐌𝟎𝐌 𝐒𝟎𝐍",
-    "https://t.me/+aX_BhutfN11kNWQ1"),
-    ("🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋",
-    "https://t.me/+aX_BhutfN11kNWQ1"),
-    ("💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄",
-    "https://t.me/+aX_BhutfN11kNWQ1"),
-    ("💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢"
-    "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("🥵 𝐂𝐏 𝐊𝐢𝐝$", "https://t.me/+C6f4L2w7KyM0MTY1"),
+    ("😍 𝐌𝟎𝐌 𝐒𝟎𝐍", "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋", "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄", "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢", "https://t.me/+aX_BhutfN11kNWQ1"),
 ]
 
 # DATABASE
@@ -55,24 +50,14 @@ def save_user(uid):
 start_text = """
 𝐕𝐢𝐝𝐞𝐨 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 🌸
 
-𝐅𝐨𝐫 𝐃𝐞𝐬𝐢 𝐂𝐨𝐧𝐭𝐞𝐧𝐭 𝐋𝐨𝐯𝐞𝐫𝐬 😋
-
-𝐍𝐨 𝐒𝐧#𝐩, 𝐏𝐮𝐫𝐞 𝐃𝐞𝐬𝐢 𝐂𝐨𝐧𝐭𝐞𝐧𝐭 😙
-
-𝐫𝐚𝐫𝐞 𝐃𝐞𝐬𝐢 𝐥𝐞#𝐤𝐬 𝐞𝐯𝐞𝐫.... 🎀
-
 𝐉𝐮𝐬𝐭 𝐩𝐚𝐲 𝐚𝐧𝐝 𝐠𝐞𝐭 𝐞𝐧𝐭𝐫𝐲...
 
-𝐍𝐨 - 𝐀𝐝𝐬 𝐒𝐡#𝐭 🔥
-
-𝐏𝐫𝐢𝐜𝐞 :- ₹𝟗𝟗.𝟎𝟎/-
-
-𝐕𝐚𝐥𝐢𝐝𝐢𝐭𝐲 :- 𝐥𝐢𝐟𝐞𝐭𝐢𝐦𝐞
+𝐏𝐫𝐢𝐜𝐞 :- ₹𝟗𝟗
 """
 
 payment_text = """
 1️⃣ Scan QR & Pay ₹99
-2️⃣ Click 'I HAVE PAID' below 👇
+2️⃣ Click 'I HAVE PAID'
 """
 
 # START
@@ -83,8 +68,8 @@ def start(message):
 
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton("💎 Get Premium",callback_data="buy"))
-    markup.add(InlineKeyboardButton("🎬 Premium Demo",url=demo_channel))
-    markup.add(InlineKeyboardButton("📖 How To Get Premium",url=how_channel))
+    markup.add(InlineKeyboardButton("🎬 Demo",url=demo_channel))
+    markup.add(InlineKeyboardButton("📖 How",url=how_channel))
 
     bot.send_photo(
         message.chat.id,
@@ -93,93 +78,6 @@ def start(message):
         reply_markup=markup
     )
 
-# USERS
-@bot.message_handler(commands=['users'])
-def users_count(message):
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    bot.reply_to(message,f"👥 Total Users: {len(users)}")
-
-# BROADCAST
-@bot.message_handler(commands=['broadcast'])
-def broadcast(message):
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    try:
-        text = message.text.split(" ",1)[1]
-    except:
-        bot.reply_to(message,"Usage:\n/broadcast your message")
-        return
-
-    for user in users:
-        try:
-            bot.send_message(user,text)
-        except:
-            pass
-
-    bot.reply_to(message,"✅ Broadcast Sent")
-
-# SET DEMO
-@bot.message_handler(commands=['setdemo'])
-def set_demo(message):
-
-    global demo_channel
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    try:
-        demo_channel = message.text.split(" ")[1]
-        bot.reply_to(message,"✅ Demo channel updated")
-    except:
-        bot.reply_to(message,"Usage:\n/setdemo link")
-
-# SET HOW
-@bot.message_handler(commands=['sethow'])
-def set_how(message):
-
-    global how_channel
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    try:
-        how_channel = message.text.split(" ")[1]
-        bot.reply_to(message,"✅ How channel updated")
-    except:
-        bot.reply_to(message,"Usage:\n/sethow link")
-
-# SET PREMIUM
-@bot.message_handler(commands=['setpremium'])
-def set_premium(message):
-
-    global premium_channel
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    try:
-        premium_channel = message.text.split(" ")[1]
-        bot.reply_to(message,"✅ Premium channel updated")
-    except:
-        bot.reply_to(message,"Usage:\n/setpremium link")
-
-# SET QR
-@bot.message_handler(commands=['setqr'])
-def set_qr(message):
-
-    global waiting_qr
-
-    if message.from_user.id != ADMIN_ID:
-        return
-
-    waiting_qr = True
-    bot.reply_to(message,"📷 Send new QR image")
-
 # PHOTO HANDLER
 @bot.message_handler(content_types=['photo'])
 def photo_handler(message):
@@ -187,7 +85,6 @@ def photo_handler(message):
     global waiting_qr
     uid = message.from_user.id
 
-    # QR UPDATE
     if waiting_qr and uid == ADMIN_ID:
 
         file_info = bot.get_file(message.photo[-1].file_id)
@@ -200,12 +97,9 @@ def photo_handler(message):
         bot.reply_to(message,"✅ QR updated")
         return
 
-    # SCREENSHOT
     if uid not in waiting_screenshot:
-        bot.reply_to(message,"⚠️ Please click 'I HAVE PAID' first")
+        bot.reply_to(message,"⚠️ Click 'I HAVE PAID' first")
         return
-
-    waiting_screenshot.pop(uid)
 
     username = message.from_user.username or "NoUsername"
 
@@ -234,7 +128,7 @@ def buttons(call):
 
         markup = InlineKeyboardMarkup()
 
-        for i, name in enumerate(categories):
+        for i, (name, link) in enumerate(categories):
             markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
 
         markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
@@ -272,7 +166,7 @@ def buttons(call):
     elif call.data == "paid":
 
         waiting_screenshot[uid] = True
-        bot.send_message(uid,"📸 Send your payment screenshot")
+        bot.send_message(uid,"📸 Send screenshot")
 
     elif call.data == "back":
 
@@ -281,22 +175,22 @@ def buttons(call):
 
     elif call.data.startswith("approve_"):
 
-    uid = int(call.data.split("_")[1])
+        uid = int(call.data.split("_")[1])
 
-    link = user_category.get(uid, "Contact Admin")
+        link = user_category.get(uid, "Contact Admin")
 
-    bot.send_message(
-        uid,
-        f"✅ Payment Verified!\n\nJoin:\n{link}"
-    )
+        bot.send_message(
+            uid,
+            f"✅ Payment Verified!\n\nJoin:\n{link}"
+        )
 
-    bot.edit_message_caption(
-        caption="✅ Approved",
-        chat_id=call.message.chat.id,
-        message_id=call.message.message_id
-    )
+        bot.edit_message_caption(
+            caption="✅ Approved",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id
+        )
 
-    bot.answer_callback_query(call.id, "Approved", show_alert=True)
+        bot.answer_callback_query(call.id,"Approved",show_alert=True)
 
     elif call.data.startswith("reject_"):
 
