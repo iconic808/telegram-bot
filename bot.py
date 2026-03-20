@@ -245,7 +245,7 @@ def buttons(call):
         message_id=call.message.message_id,
         reply_markup=markup
     )
-        )
+        
 
     elif call.data.startswith("cat_"):
 
