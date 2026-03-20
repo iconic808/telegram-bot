@@ -18,16 +18,16 @@ DB_FILE = "database.json"
 
 # Categories
 categories = [
-    "🥵 𝐂𝐏 𝐊𝐢𝐝$",
-    "https://t.me/+C6f4L2w7KyM0MTY1",
-    "😍 𝐌𝟎𝐌 𝐒𝟎𝐍",
-    "https://t.me/+aX_BhutfN11kNWQ1",
-    "🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋",
-    "https://t.me/+aX_BhutfN11kNWQ1",
-    "💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄",
-    "https://t.me/+aX_BhutfN11kNWQ1",
-    "💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢"
-    "https://t.me/+aX_BhutfN11kNWQ1",
+    ("🥵 𝐂𝐏 𝐊𝐢𝐝$",
+    "https://t.me/+C6f4L2w7KyM0MTY1"),
+    ("😍 𝐌𝟎𝐌 𝐒𝟎𝐍",
+    "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋",
+    "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄",
+    "https://t.me/+aX_BhutfN11kNWQ1"),
+    ("💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢"
+    "https://t.me/+aX_BhutfN11kNWQ1"),
 ]
 
 # DATABASE
@@ -232,40 +232,43 @@ def buttons(call):
 
     if call.data == "buy":
 
-        markup = InlineKeyboardMarkup()
+    markup = InlineKeyboardMarkup()
 
-        for i, name in enumerate(categories):
-            markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
+    for i, name in enumerate(categories):
+        markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
 
-        markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
+    markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
 
-        bot.edit_message_caption(
-            caption="📂 Select your category 👇",
-            chat_id=call.message.chat.id,
-            message_id=call.message.message_id,
-            reply_markup=markup
+    bot.edit_message_caption(
+        caption="📂 Select category 👇",
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+    )
         )
 
     elif call.data.startswith("cat_"):
 
-        index = int(call.data.split("_")[1])
-        selected = categories[index]
+    index = int(call.data.split("_")[1])
+    selected_name, selected_link = categories[index]
 
-        markup = InlineKeyboardMarkup()
-        markup.add(InlineKeyboardButton("✅ I HAVE PAID", callback_data="paid"))
-        markup.add(InlineKeyboardButton("⬅️ Back", callback_data="buy"))
+    user_category[uid] = selected_link
 
-        media = InputMediaPhoto(
-            open("qr.jpg","rb"),
-            caption=f"{selected}\n\n{payment_text}"
-        )
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton("✅ I HAVE PAID", callback_data="paid"))
+    markup.add(InlineKeyboardButton("⬅️ Back", callback_data="buy"))
 
-        bot.edit_message_media(
-            media,
-            call.message.chat.id,
-            call.message.message_id,
-            reply_markup=markup
-        )
+    media = InputMediaPhoto(
+        open("qr.jpg","rb"),
+        caption=f"{selected_name}\n\n{payment_text}"
+    )
+
+    bot.edit_message_media(
+        media,
+        call.message.chat.id,
+        call.message.message_id,
+        reply_markup=markup
+    )
 
     elif call.data == "paid":
 
@@ -279,12 +282,14 @@ def buttons(call):
 
     elif call.data.startswith("approve_"):
 
-        uid = int(call.data.split("_")[1])
+    uid = int(call.data.split("_")[1])
 
-        bot.send_message(
-            uid,
-            "✅ Payment Verified!\n\nJoin:\n"+premium_channel
-        )
+    link = user_category.get(uid, "Contact Admin")
+
+    bot.send_message(
+        uid,
+        f"✅ Payment Verified!\n\nJoin:\n{link}"
+    )
 
         bot.edit_message_caption(
             caption="✅ Approved",
