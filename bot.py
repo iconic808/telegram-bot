@@ -7,15 +7,23 @@ ADMIN_ID = 8419203344
 
 bot = telebot.TeleBot(TOKEN)
 
-premium_channel = "https://t.me/+aX_BhutfN11kNWQ1"
-demo_channel = "https://t.me/demodekhloguys001"
-how_channel = "https://t.me/demodekhloguys001"
+premium_channel = "https://t.me/+vZk5pN-jUWVlYzRl"
+demo_channel = "https://t.me/+C6f4L2w7KyM0MTY1"
+how_channel = "https://t.me/+C6f4L2w7KyM0MTY1"
 
 waiting_screenshot = {}
 waiting_qr = False
 
 DB_FILE = "database.json"
 
+# Categories
+categories = [
+    "🎬 Premium Videos",
+    "💎 Exclusive Content",
+    "🔥 Trending Clips",
+    "🎥 Web Series",
+    "🌟 Special Collection"
+]
 
 # DATABASE
 def load_db():
@@ -25,15 +33,12 @@ def load_db():
     except:
         return {"users":[]}
 
-
 def save_db(data):
     with open(DB_FILE,"w") as f:
         json.dump(data,f)
 
-
 db = load_db()
 users = set(db["users"])
-
 
 def save_user(uid):
     if uid not in users:
@@ -41,32 +46,22 @@ def save_user(uid):
         db["users"] = list(users)
         save_db(db)
 
-
 # TEXT
 start_text = """
 𝐕𝐢𝐝𝐞𝐨 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 🌸
 
-𝐅𝐨𝐫 𝐃𝐞𝐬𝐢 𝐂𝐨𝐧𝐭𝐞𝐧𝐭 𝐋𝐨𝐯𝐞𝐫𝐬 😋
-
-𝐍𝐨 𝐒𝐧#𝐩, 𝐏𝐮𝐫𝐞 𝐃𝐞𝐬𝐢 𝐂𝐨𝐧𝐭𝐞𝐧𝐭 😙
-
-𝐫𝐚𝐫𝐞 𝐃𝐞𝐬𝐢 𝐥𝐞#𝐤𝐬 𝐞𝐯𝐞𝐫.... 🎀
+𝐅𝐨𝐫 𝐂𝐨𝐧𝐭𝐞𝐧𝐭 𝐋𝐨𝐯𝐞𝐫𝐬 😋
 
 𝐉𝐮𝐬𝐭 𝐩𝐚𝐲 𝐚𝐧𝐝 𝐠𝐞𝐭 𝐞𝐧𝐭𝐫𝐲...
 
-𝐍𝐨 - 𝐀𝐝𝐬 𝐒𝐡#𝐭 🔥
-
-𝐏𝐫𝐢𝐜𝐞 :- ₹𝟗𝟗.𝟎𝟎/-
-
+𝐏𝐫𝐢𝐜𝐞 :- ₹𝟗𝟗/-
 𝐕𝐚𝐥𝐢𝐝𝐢𝐭𝐲 :- 𝐥𝐢𝐟𝐞𝐭𝐢𝐦𝐞
 """
 
-
 payment_text = """
-1️⃣ 𝐒𝐜𝐚𝐧 𝐐𝐑 & 𝐏𝐚𝐲 ₹𝟗𝟗
-2️⃣ 𝐂𝐥𝐢𝐜𝐤 𝐨𝐧 '𝐈 𝐇𝐀𝐕𝐄 𝐏𝐀𝐈𝐃' 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 👇
+1️⃣ Scan QR & Pay ₹99
+2️⃣ Click 'I HAVE PAID' below 👇
 """
-
 
 # START
 @bot.message_handler(commands=['start'])
@@ -86,7 +81,6 @@ def start(message):
         reply_markup=markup
     )
 
-
 # USERS
 @bot.message_handler(commands=['users'])
 def users_count(message):
@@ -95,7 +89,6 @@ def users_count(message):
         return
 
     bot.reply_to(message,f"👥 Total Users: {len(users)}")
-
 
 # BROADCAST
 @bot.message_handler(commands=['broadcast'])
@@ -118,7 +111,6 @@ def broadcast(message):
 
     bot.reply_to(message,"✅ Broadcast Sent")
 
-
 # SET DEMO
 @bot.message_handler(commands=['setdemo'])
 def set_demo(message):
@@ -132,8 +124,7 @@ def set_demo(message):
         demo_channel = message.text.split(" ")[1]
         bot.reply_to(message,"✅ Demo channel updated")
     except:
-        bot.reply_to(message,"Usage:\n/setdemo https://t.me/channel")
-
+        bot.reply_to(message,"Usage:\n/setdemo link")
 
 # SET HOW
 @bot.message_handler(commands=['sethow'])
@@ -148,8 +139,7 @@ def set_how(message):
         how_channel = message.text.split(" ")[1]
         bot.reply_to(message,"✅ How channel updated")
     except:
-        bot.reply_to(message,"Usage:\n/sethow https://t.me/channel")
-
+        bot.reply_to(message,"Usage:\n/sethow link")
 
 # SET PREMIUM
 @bot.message_handler(commands=['setpremium'])
@@ -164,8 +154,7 @@ def set_premium(message):
         premium_channel = message.text.split(" ")[1]
         bot.reply_to(message,"✅ Premium channel updated")
     except:
-        bot.reply_to(message,"Usage:\n/setpremium https://t.me/channel")
-
+        bot.reply_to(message,"Usage:\n/setpremium link")
 
 # SET QR
 @bot.message_handler(commands=['setqr'])
@@ -179,16 +168,14 @@ def set_qr(message):
     waiting_qr = True
     bot.reply_to(message,"📷 Send new QR image")
 
-
-# QR UPDATE
+# PHOTO HANDLER
 @bot.message_handler(content_types=['photo'])
 def photo_handler(message):
 
     global waiting_qr
-
     uid = message.from_user.id
 
-    # QR UPDATE (ADMIN)
+    # QR UPDATE
     if waiting_qr and uid == ADMIN_ID:
 
         file_info = bot.get_file(message.photo[-1].file_id)
@@ -198,20 +185,13 @@ def photo_handler(message):
             f.write(downloaded)
 
         waiting_qr = False
-
-        bot.reply_to(message,"✅ QR updated successfully")
+        bot.reply_to(message,"✅ QR updated")
         return
 
-
-    # SCREENSHOT VERIFICATION
+    # SCREENSHOT
     if uid not in waiting_screenshot:
-
-        bot.reply_to(
-            message,
-            "⚠️𝐓𝐇𝐈𝐒 𝐈𝐒 𝐍𝐎𝐓 𝐂𝐎𝐑𝐑𝐄𝐂𝐓 𝐒𝐄𝐋𝐄𝐂𝐓𝐈𝐎𝐍 🥲\n𝐏𝐋𝐄𝐀𝐒𝐄, 𝐒𝐄𝐋𝐄𝐂𝐓 𝐅𝐑𝐎𝐌 𝐎𝐏𝐓𝐈𝐎𝐍𝐒✅"
-        )
+        bot.reply_to(message,"⚠️ Please click 'I HAVE PAID' first")
         return
-
 
     waiting_screenshot.pop(uid)
 
@@ -226,12 +206,11 @@ def photo_handler(message):
     bot.send_photo(
         ADMIN_ID,
         message.photo[-1].file_id,
-        caption=f"Payment Screenshot\n\nUser: @{username}\nID: {uid}",
+        caption=f"Payment Screenshot\nUser: @{username}\nID: {uid}",
         reply_markup=markup
     )
 
-    bot.reply_to(message,"⏳ Screenshot sent for verification")
-
+    bot.reply_to(message,"⏳ Sent for verification")
 
 # BUTTONS
 @bot.callback_query_handler(func=lambda call: True)
@@ -242,12 +221,31 @@ def buttons(call):
     if call.data == "buy":
 
         markup = InlineKeyboardMarkup()
-        markup.add(InlineKeyboardButton("✅ I HAVE PAID",callback_data="paid"))
-        markup.add(InlineKeyboardButton("❌ Cancel",callback_data="back"))
+
+        for i, name in enumerate(categories):
+            markup.add(InlineKeyboardButton(name, callback_data=f"cat_{i}"))
+
+        markup.add(InlineKeyboardButton("❌ Cancel", callback_data="back"))
+
+        bot.edit_message_caption(
+            caption="📂 Select your category 👇",
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            reply_markup=markup
+        )
+
+    elif call.data.startswith("cat_"):
+
+        index = int(call.data.split("_")[1])
+        selected = categories[index]
+
+        markup = InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton("✅ I HAVE PAID", callback_data="paid"))
+        markup.add(InlineKeyboardButton("⬅️ Back", callback_data="buy"))
 
         media = InputMediaPhoto(
             open("qr.jpg","rb"),
-            caption=payment_text
+            caption=f"{selected}\n\n{payment_text}"
         )
 
         bot.edit_message_media(
@@ -257,18 +255,15 @@ def buttons(call):
             reply_markup=markup
         )
 
-
     elif call.data == "paid":
 
         waiting_screenshot[uid] = True
-        bot.send_message(uid,"📸 Please send your payment screenshot now.")
-
+        bot.send_message(uid,"📸 Send your payment screenshot")
 
     elif call.data == "back":
 
         bot.delete_message(call.message.chat.id,call.message.message_id)
         start(call.message)
-
 
     elif call.data.startswith("approve_"):
 
@@ -276,17 +271,16 @@ def buttons(call):
 
         bot.send_message(
             uid,
-            "✅ Payment Verified!\n\nJoin your private channel:\n"+premium_channel
+            "✅ Payment Verified!\n\nJoin:\n"+premium_channel
         )
 
         bot.edit_message_caption(
-            caption="✅ Payment Approved",
+            caption="✅ Approved",
             chat_id=call.message.chat.id,
             message_id=call.message.message_id
         )
 
         bot.answer_callback_query(call.id,"Approved",show_alert=True)
-
 
     elif call.data.startswith("reject_"):
 
@@ -295,13 +289,12 @@ def buttons(call):
         bot.send_message(uid,"❌ Payment Rejected")
 
         bot.edit_message_caption(
-            caption="❌ Payment Rejected",
+            caption="❌ Rejected",
             chat_id=call.message.chat.id,
             message_id=call.message.message_id
         )
 
         bot.answer_callback_query(call.id,"Rejected",show_alert=True)
-
 
 print("Bot Running...")
 bot.infinity_polling(skip_pending=True)
