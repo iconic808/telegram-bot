@@ -19,15 +19,15 @@ DB_FILE = "database.json"
 # Categories
 categories = [
     "🥵 𝐂𝐏 𝐊𝐢𝐝$",
-    "https://t.me/+C6f4L2w7KyM0MTY1
+    "https://t.me/+C6f4L2w7KyM0MTY1",
     "😍 𝐌𝟎𝐌 𝐒𝟎𝐍",
-    "https://t.me/+aX_BhutfN11kNWQ1
+    "https://t.me/+aX_BhutfN11kNWQ1",
     "🍑 𝐓€€𝐍 𝐆𝐥𝐑𝐋",
-    "https://t.me/your_channel3
+    "https://t.me/+aX_BhutfN11kNWQ1",
     "💋 𝐑@𝐏€ & 𝐅𝟎𝐑€𝐄",
-    "https://t.me/your_channel4
+    "https://t.me/+aX_BhutfN11kNWQ1",
     "💦 𝐥𝐍𝐃𝐢@𝐍 𝐃€$𝐢"
-    "https://t.me/your_channel5
+    "https://t.me/+aX_BhutfN11kNWQ1",
 ]
 
 # DATABASE
